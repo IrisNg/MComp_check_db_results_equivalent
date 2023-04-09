@@ -6,16 +6,14 @@ import psycopg2
 
 # Step 3: Install Postgresql locally on your machine, create a database and user, then configure the db settings below
 db_config = {
-    "dbname": "Fabian",
+    "dbname": "Test2",
     "user": "postgres",
     "host": "localhost",
     "password": "1234"
 }
 
-table_name = "serialisability_1"
 
 # Step 4: Run this python file, check table is successfully created in your database with rows seeded automatically
-
 
 
 
@@ -109,10 +107,10 @@ def q_3():
     conn = get_conn()
     cur = conn.cursor()
     print('3')
-    # cur.execute("""SELECT per.empid, per.lname FROM employee per WHERE NOT EXISTS (SELECT 1 FROM (
-	# SELECT COUNT(*) AS count FROM payroll outer_pay LEFT JOIN (SELECT * FROM payroll pay WHERE pay.empid != per.empid OR pay.salary != 189170 ORDER BY pay.salary, pay.empid) AS non_match ON outer_pay.empid = non_match.empid WHERE non_match.empid IS NULL
-    # ) AS matches WHERE (CASE WHEN matches.count = 0 THEN TRUE ELSE FALSE END)) ORDER BY per.empid, per.lname;""")
-    cur.execute('SELECT per.empid, per.lname FROM employee per WHERE per.empid IN (SELECT pay.empid FROM payroll pay WHERE per.empid = pay.empid) ORDER BY per.empid, per.lname')
+    cur.execute("""SELECT per.empid, per.lname FROM employee per WHERE NOT EXISTS (SELECT 1 FROM (
+	SELECT COUNT(*) AS count FROM payroll outer_pay LEFT JOIN (SELECT * FROM payroll pay WHERE pay.empid != per.empid OR pay.salary != 189170 ORDER BY pay.salary, pay.empid) AS non_match ON outer_pay.empid = non_match.empid WHERE non_match.empid IS NULL
+    ) AS matches WHERE (CASE WHEN matches.count = 0 THEN TRUE ELSE FALSE END)) ORDER BY per.empid, per.lname;""")
+    # cur.execute('SELECT per.empid, per.lname FROM employee per WHERE per.empid IN (SELECT pay.empid FROM payroll pay WHERE per.empid = pay.empid) ORDER BY per.empid, per.lname')
     results = cur.fetchall()
     end_results = []
     for x in results:
